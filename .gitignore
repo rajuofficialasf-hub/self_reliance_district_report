@@ -1,0 +1,10 @@
+# উপকারভোগীর ডাটা (NID, মোবাইল নম্বর) কখনো রেপোতে রাখবেন না
+*.xlsx
+*.xls
+*.csv
+!template/SRP-26_Data_Template.xlsx
+
+# অন্যান্য
+__pycache__/
+.DS_Store
+node_modules/

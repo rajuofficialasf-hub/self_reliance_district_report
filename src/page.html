@@ -1,0 +1,109 @@
+<div id="start" class="band"><div class="in"><div class="land">
+  <div>
+    <p class="org">আস-সুন্নাহ ফাউন্ডেশন</p>
+    <h1>SRP-২৬ জেলা রিপোর্ট জেনারেটর</h1>
+    <p class="lead">জেলার উপকারভোগী ডাটা ফাইল দিন। চার্টসহ বাংলা রিপোর্ট তৈরি হবে এবং প্রতিটি জেলার জন্য আলাদা A4 ল্যান্ডস্কেপ PDF সেভ করা যাবে।</p>
+    <ol class="how">
+      <li><span>টেমপ্লেট ডাউনলোড করে জেলার তথ্য পূরণ করুন। Kobo থেকে নামানো ফাইলও চলবে।</span></li>
+      <li><span>ফাইলটি ডানের ঘরে ছেড়ে দিন, অথবা ক্লিক করে বাছুন।</span></li>
+      <li><span>রিপোর্ট দেখে “PDF / প্রিন্ট” চাপুন এবং প্রিন্ট ডায়ালগে Save as PDF বাছুন। ফাইলের নাম জেলার নামে আসবে।</span></li>
+    </ol>
+    <p class="priv">ফাইল আপনার ব্রাউজারেই পড়া হয়। NID ও মোবাইল নম্বরসহ কোনো তথ্য কোথাও পাঠানো বা সংরক্ষণ হয় না।</p>
+  </div>
+  <div class="panel">
+    <div class="head"><h2>ডাটা ফাইল</h2><p>Excel (.xlsx) বা CSV</p></div>
+    <label class="drop" id="drop" for="fileIn"><b>ফাইল এখানে ছেড়ে দিন</b><span>অথবা ক্লিক করে ফাইল বাছুন</span><input id="fileIn" type="file" accept=".xlsx,.xls,.csv"></label>
+    <p id="dropMsg" role="status"></p>
+    <div class="tpl">
+      <div class="tpl-row">
+        <div><strong>ডাটা টেমপ্লেট</strong><span class="d">৩৮টি কলাম, ড্রপডাউনসহ। নির্দেশনা শিট ভেতরেই আছে।</span></div>
+        <button class="btn" id="tplBtn" type="button">টেমপ্লেট ডাউনলোড (.xlsx)</button>
+      </div>
+      <p class="msg" id="tplMsg" role="status"></p>
+    </div>
+  </div>
+</div></div></div>
+
+<div id="bar" class="band" hidden><div class="in"><div class="barin">
+  <span class="fn" id="fname"></span>
+  <label id="distWrap" hidden>জেলা <select id="distSel"></select></label>
+  <label>প্রত্যেকের সহায়তা (টাকা) <input id="fundIn" type="number" value="50000" min="1" step="1000" inputmode="numeric"></label>
+  <div class="acts"><button class="btn pri" id="printBtn" type="button">PDF / প্রিন্ট</button><button class="btn" id="tplBtn2" type="button">টেমপ্লেট</button><button class="btn" id="again" type="button">অন্য ফাইল</button></div>
+</div><p class="hint">PDF করতে প্রিন্ট ডায়ালগে “Save as PDF” বাছুন। লেআউট নিজে থেকেই A4 ল্যান্ডস্কেপে সাজে। বাটনে কাজ না হলে Ctrl+P (Mac-এ Cmd+P) চাপুন। <span id="tplMsg2"></span></p></div></div>
+
+<div id="report" class="band" hidden><div class="in"><article class="sheet">
+  <header class="mast">
+    <div class="top"><span>আস-সুন্নাহ ফাউন্ডেশন · SRP-২৬</span><span id="eyebrow"></span></div>
+    <div>
+      <h1 id="h1"></h1>
+      <p class="subt">উপকারভোগী প্রতিবেদন</p>
+      <p class="lead" id="lead"></p>
+    </div>
+    <dl class="total"><dt>মোট সহায়তা</dt><dd class="big" id="fundBig"></dd><dd class="small" id="fundSub"></dd></dl>
+  </header>
+  <div class="kpis" id="kpis"></div>
+  <div class="summary"><h2>সারসংক্ষেপ</h2><ul id="finds"></ul></div>
+
+  <section>
+    <p class="eyebrow2">কোথায়</p>
+    <h2 id="h-where"></h2>
+    <div class="grid">
+      <div class="card wide">
+        <h3>উপজেলাভিত্তিক উপকারভোগী ও সহায়তা</h3>
+        <p class="sub">প্রত্যেকে <span class="F"></span> টাকা করে পেয়েছেন। সহায়তার অঙ্ক = উপকারভোগীর সংখ্যা × <span class="F"></span>।</p>
+        <div class="tw"><table id="upTable"></table></div>
+      </div>
+      <div class="card">
+        <h3>অনুমোদনের সময়রেখা</h3>
+        <p class="sub">কোন সময়ে কতজনের আবেদন অনুমোদিত হয়েছে</p>
+        <div id="dates"></div>
+      </div>
+      <div class="card">
+        <h3 id="comTitle">কমিউনিটি ও স্থানীয় ইমাম</h3>
+        <p class="sub">প্রতিটি কমিউনিটির উপকারভোগীর সংখ্যা</p>
+        <details><summary id="comSum">তালিকা দেখুন</summary><div class="tw" style="margin-top:10px"><table id="comTable"></table></div></details>
+        <div id="comBars" style="margin-top:12px"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow2">কারা</p>
+    <h2 id="h-who"></h2>
+    <div class="grid">
+      <div class="card"><h3>লিঙ্গ</h3><p class="sub">পুরুষ ও মহিলা উপকারভোগী</p><div id="gender"></div></div>
+      <div class="card"><h3>বয়সভিত্তিক বিন্যাস</h3><p class="sub" id="ageSub"></p><div id="age"></div></div>
+      <div class="card"><h3>শিক্ষার স্তর</h3><p class="sub">সর্বোচ্চ শিক্ষাগত যোগ্যতা অনুযায়ী</p><div id="edu"></div></div>
+      <div class="card"><h3>প্রধান পেশা</h3><p class="sub">সহায়তা পাওয়ার আগে উপকারভোগীর পেশা</p><div id="occ"></div></div>
+      <div class="card"><h3>বৈবাহিক অবস্থা</h3><p class="sub">বৈবাহিক অবস্থা অনুযায়ী উপকারভোগী</p><div id="marital"></div></div>
+      <div class="card"><h3>বসবাসের ঘর</h3><p class="sub">ঘরের ধরন অনুযায়ী</p><div id="house"></div></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow2">আর্থিক অবস্থা</p>
+    <h2 id="h-money"></h2>
+    <div class="grid">
+      <div class="card"><h3>পরিবারের মাসিক মোট আয়</h3><p class="sub" id="incSub"></p><div id="inc"></div></div>
+      <div class="card"><h3>গড় আয় ও ব্যয় (মাসিক)</h3><p class="sub">টাকায়, প্রতি পরিবারে গড়</p><div id="incexp"></div><p class="note" id="incNote"></p></div>
+      <div class="card"><h3>দেনার পরিমাণ অনুযায়ী উপকারভোগী</h3><p class="sub">অনাদায়ী দেনমোহর, ঋণ ও বকেয়া বিল মিলিয়ে</p><div id="debt"></div></div>
+      <div class="card"><h3>দেনা কী নিয়ে গঠিত</h3><p class="sub" id="debtSub"></p><div class="stackrow"><div class="stack" id="debtStack"></div></div><div class="leg" id="debtLeg"></div></div>
+      <div class="card"><h3>ঋণের উৎস</h3><p class="sub" id="loanSub"></p><div id="loanType"></div></div>
+      <div class="card"><h3>ঋণ নেওয়ার কারণ</h3><p class="sub" id="loanPurSub"></p><div id="loanPurpose"></div></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow2">সহায়তার ব্যবহার</p>
+    <h2 id="h-use"></h2>
+    <div class="grid">
+      <div class="card"><h3>স্বাবলম্বী হওয়ার পথ</h3><p class="sub">উপকারভোগী কীভাবে <span class="F"></span> টাকা কাজে লাগাতে চান</p><div id="plan"></div></div>
+      <div class="card"><h3>নারী ও পুরুষের পছন্দ</h3><p class="sub">প্রতিটি দলের ভেতরে শতাংশ</p><div id="planGender"></div></div>
+      <div class="card"><h3>কোন ব্যবসা করতে চান</h3><p class="sub" id="bizSub"></p><div id="biz"></div></div>
+      <div class="card"><h3>ব্যবসার জন্য কত টাকা লাগবে</h3><p class="sub" id="needSub"></p><div id="need"></div><p class="note" id="needNote"></p></div>
+      <div class="card wide"><h3><span class="F"></span> টাকা কতটা বড় অঙ্ক</h3><p class="sub">উপকারভোগী পরিবারের গড় অবস্থার সঙ্গে তুলনা (টাকায়)</p><div id="context"></div></div>
+    </div>
+  </section>
+
+  <div class="dnote"><h2>তথ্য সম্পর্কে</h2><ul id="notes"></ul></div>
+</article></div></div>
