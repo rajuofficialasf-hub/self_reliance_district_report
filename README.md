@@ -81,6 +81,7 @@ Chrome, Edge, Firefox ও Safari-এর সাম্প্রতিক সংস
 
 - [SheetJS](https://sheetjs.com) Community Edition, Apache License 2.0 (`licenses/SheetJS-LICENSE.txt`)
 - Hind Siliguri ফন্ট, SIL Open Font License 1.1 (`licenses/HindSiliguri-OFL.txt`)
+- Noto Sans Bengali ফন্ট (শুধু ০-৯ সংখ্যার অংশ), SIL Open Font License 1.1 (`licenses/NotoSansBengali-OFL.txt`)
 
 ---
 

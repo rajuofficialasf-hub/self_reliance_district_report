@@ -44,6 +44,15 @@ def main() -> int:
                 "src:url(data:font/woff2;base64,%s) format('woff2');unicode-range:%s}"
                 % (weight, b64(font), unicode_range)
             )
+    # বাংলা সংখ্যা (০-৯): Hind Siliguri-র ১ খুব ছোট, তাই এই অংশটুকু Noto Sans Bengali থেকে।
+    # একই family নামে পরে ঘোষণা করায় এটিই সংখ্যার জন্য ব্যবহার হয়।
+    for weight in WEIGHTS:
+        font = SRC / "fonts" / f"noto-digits-{weight}.woff2"
+        faces.append(
+            "@font-face{font-family:'Hind Siliguri';font-weight:%d;font-display:swap;"
+            "src:url(data:font/woff2;base64,%s) format('woff2');unicode-range:U+09E6-09EF}"
+            % (weight, b64(font))
+        )
     css = (SRC / "style.css").read_text(encoding="utf-8")
     page = (SRC / "page.html").read_text(encoding="utf-8")
     app = (SRC / "app.js").read_text(encoding="utf-8")
