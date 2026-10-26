@@ -26,7 +26,7 @@
 
 <div id="bar" class="band" hidden><div class="in"><div class="barin">
   <span class="fn" id="fname"></span>
-  <label id="distWrap" hidden>জেলা <select id="distSel"></select></label>
+  <label id="distWrap" hidden>দেখুন <select id="distSel"></select></label>
   <label>প্রত্যেকের সহায়তা (টাকা) <input id="fundIn" type="number" value="50000" min="1" step="1000" inputmode="numeric"></label>
   <div class="acts"><button class="btn pri" id="printBtn" type="button">PDF / প্রিন্ট</button><button class="btn" id="tplBtn2" type="button">টেমপ্লেট</button><button class="btn" id="again" type="button">অন্য ফাইল</button></div>
 </div><p class="hint">PDF করতে প্রিন্ট ডায়ালগে “Save as PDF” বাছুন। লেআউট নিজে থেকেই A4 ল্যান্ডস্কেপে সাজে। বাটনে কাজ না হলে Ctrl+P (Mac-এ Cmd+P) চাপুন। <span id="tplMsg2"></span></p></div></div>
@@ -49,7 +49,7 @@
     <h2 id="h-where"></h2>
     <div class="grid">
       <div class="card wide">
-        <h3>উপজেলাভিত্তিক উপকারভোগী ও সহায়তা</h3>
+        <h3 id="upTitle">উপজেলাভিত্তিক উপকারভোগী ও সহায়তা</h3>
         <p class="sub">প্রত্যেকে <span class="F"></span> টাকা করে পেয়েছেন। সহায়তার অঙ্ক = উপকারভোগীর সংখ্যা × <span class="F"></span>।</p>
         <div class="tw"><table id="upTable"></table></div>
       </div>
@@ -60,8 +60,8 @@
       </div>
       <div class="card">
         <h3 id="comTitle">কমিউনিটি ও স্থানীয় ইমাম</h3>
-        <p class="sub">প্রতিটি কমিউনিটির উপকারভোগীর সংখ্যা</p>
-        <details><summary id="comSum">তালিকা দেখুন</summary><div class="tw" style="margin-top:10px"><table id="comTable"></table></div></details>
+        <p class="sub" id="comSub">প্রতিটি কমিউনিটির উপকারভোগীর সংখ্যা</p>
+        <details id="comDet"><summary id="comSum">তালিকা দেখুন</summary><div class="tw" style="margin-top:10px"><table id="comTable"></table></div></details>
         <div id="comBars" style="margin-top:12px"></div>
       </div>
     </div>

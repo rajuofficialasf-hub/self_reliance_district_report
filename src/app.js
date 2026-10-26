@@ -17,7 +17,21 @@ var norm = function(s){ return String(s == null ? '' : s).normalize('NFC').repla
 var BNM = ['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
 
 /* ---------- বাংলা নামের তালিকা ---------- */
-var DIST = {bagerhat:'বাগেরহাট',bandarban:'বান্দরবান',barguna:'বরগুনা',barishal:'বরিশাল',barisal:'বরিশাল',bhola:'ভোলা',bogura:'বগুড়া',bogra:'বগুড়া',brahmanbaria:'ব্রাহ্মণবাড়িয়া',chandpur:'চাঁদপুর',chattogram:'চট্টগ্রাম',chittagong:'চট্টগ্রাম',chuadanga:'চুয়াডাঙ্গা',cumilla:'কুমিল্লা',comilla:'কুমিল্লা',coxsbazar:'কক্সবাজার',coxbazar:'কক্সবাজার',dhaka:'ঢাকা',dinajpur:'দিনাজপুর',faridpur:'ফরিদপুর',feni:'ফেনী',gaibandha:'গাইবান্ধা',gazipur:'গাজীপুর',gopalganj:'গোপালগঞ্জ',habiganj:'হবিগঞ্জ',jamalpur:'জামালপুর',jashore:'যশোর',jessore:'যশোর',jhalokati:'ঝালকাঠি',jhalakathi:'ঝালকাঠি',jhalokathi:'ঝালকাঠি',jhenaidah:'ঝিনাইদহ',joypurhat:'জয়পুরহাট',khagrachhari:'খাগড়াছড়ি',khagrachari:'খাগড়াছড়ি',khulna:'খুলনা',kishoreganj:'কিশোরগঞ্জ',kurigram:'কুড়িগ্রাম',kushtia:'কুষ্টিয়া',lakshmipur:'লক্ষ্মীপুর',lalmonirhat:'লালমনিরহাট',madaripur:'মাদারীপুর',magura:'মাগুরা',manikganj:'মানিকগঞ্জ',meherpur:'মেহেরপুর',moulvibazar:'মৌলভীবাজার',maulvibazar:'মৌলভীবাজার',munshiganj:'মুন্সীগঞ্জ',mymensingh:'ময়মনসিংহ',naogaon:'নওগাঁ',narail:'নড়াইল',narayanganj:'নারায়ণগঞ্জ',narsingdi:'নরসিংদী',natore:'নাটোর',netrokona:'নেত্রকোণা',netrakona:'নেত্রকোণা',nilphamari:'নীলফামারী',noakhali:'নোয়াখালী',pabna:'পাবনা',panchagarh:'পঞ্চগড়',patuakhali:'পটুয়াখালী',pirojpur:'পিরোজপুর',rajbari:'রাজবাড়ী',rajshahi:'রাজশাহী',rangamati:'রাঙ্গামাটি',rangpur:'রংপুর',satkhira:'সাতক্ষীরা',shariatpur:'শরীয়তপুর',sherpur:'শেরপুর',sirajganj:'সিরাজগঞ্জ',sunamganj:'সুনামগঞ্জ',sylhet:'সিলেট',tangail:'টাঙ্গাইল',thakurgaon:'ঠাকুরগাঁও'};
+var DIST = {bagerhat:'বাগেরহাট',bandarban:'বান্দরবান',barguna:'বরগুনা',barishal:'বরিশাল',barisal:'বরিশাল',bhola:'ভোলা',bogura:'বগুড়া',bogra:'বগুড়া',brahmanbaria:'ব্রাহ্মণবাড়িয়া',chandpur:'চাঁদপুর',chapainawabganj:'চাঁপাইনবাবগঞ্জ',chattogram:'চট্টগ্রাম',chittagong:'চট্টগ্রাম',chuadanga:'চুয়াডাঙ্গা',cumilla:'কুমিল্লা',comilla:'কুমিল্লা',coxsbazar:'কক্সবাজার',coxbazar:'কক্সবাজার',dhaka:'ঢাকা',dinajpur:'দিনাজপুর',faridpur:'ফরিদপুর',feni:'ফেনী',gaibandha:'গাইবান্ধা',gazipur:'গাজীপুর',gopalganj:'গোপালগঞ্জ',habiganj:'হবিগঞ্জ',jamalpur:'জামালপুর',jashore:'যশোর',jessore:'যশোর',jhalokati:'ঝালকাঠি',jhalakathi:'ঝালকাঠি',jhalokathi:'ঝালকাঠি',jhenaidah:'ঝিনাইদহ',joypurhat:'জয়পুরহাট',khagrachhari:'খাগড়াছড়ি',khagrachari:'খাগড়াছড়ি',khulna:'খুলনা',kishoreganj:'কিশোরগঞ্জ',kurigram:'কুড়িগ্রাম',kushtia:'কুষ্টিয়া',lakshmipur:'লক্ষ্মীপুর',lalmonirhat:'লালমনিরহাট',madaripur:'মাদারীপুর',magura:'মাগুরা',manikganj:'মানিকগঞ্জ',meherpur:'মেহেরপুর',moulvibazar:'মৌলভীবাজার',maulvibazar:'মৌলভীবাজার',munshiganj:'মুন্সীগঞ্জ',mymensingh:'ময়মনসিংহ',naogaon:'নওগাঁ',narail:'নড়াইল',narayanganj:'নারায়ণগঞ্জ',narsingdi:'নরসিংদী',natore:'নাটোর',netrokona:'নেত্রকোণা',netrakona:'নেত্রকোণা',nilphamari:'নীলফামারী',noakhali:'নোয়াখালী',pabna:'পাবনা',panchagarh:'পঞ্চগড়',patuakhali:'পটুয়াখালী',pirojpur:'পিরোজপুর',rajbari:'রাজবাড়ী',rajshahi:'রাজশাহী',rangamati:'রাঙ্গামাটি',rangpur:'রংপুর',satkhira:'সাতক্ষীরা',shariatpur:'শরীয়তপুর',sherpur:'শেরপুর',sirajganj:'সিরাজগঞ্জ',sunamganj:'সুনামগঞ্জ',sylhet:'সিলেট',tangail:'টাঙ্গাইল',thakurgaon:'ঠাকুরগাঁও'};
+/* বিভাগ: [বাংলা নাম, ইংরেজি নাম, জেলার কী-গুলো (বানানের বিকল্পসহ)] */
+var DIVS = [
+ ['ঢাকা','Dhaka','dhaka faridpur gazipur gopalganj kishoreganj madaripur manikganj munshiganj narayanganj narsingdi rajbari shariatpur tangail'],
+ ['চট্টগ্রাম','Chattogram','bandarban brahmanbaria chandpur chattogram chittagong coxsbazar coxbazar cumilla comilla feni khagrachhari khagrachari lakshmipur noakhali rangamati'],
+ ['রাজশাহী','Rajshahi','bogura bogra joypurhat naogaon natore chapainawabganj pabna rajshahi sirajganj'],
+ ['খুলনা','Khulna','bagerhat chuadanga jashore jessore jhenaidah khulna kushtia magura meherpur narail satkhira'],
+ ['বরিশাল','Barishal','barguna barishal barisal bhola jhalokati jhalakathi jhalokathi patuakhali pirojpur'],
+ ['সিলেট','Sylhet','habiganj moulvibazar maulvibazar sunamganj sylhet'],
+ ['রংপুর','Rangpur','dinajpur gaibandha kurigram lalmonirhat nilphamari panchagarh rangpur thakurgaon'],
+ ['ময়মনসিংহ','Mymensingh','jamalpur mymensingh netrokona netrakona sherpur']
+];
+var DIVMAP = {}, DIVKEY = {}, DIVEN = {};
+DIVS.forEach(function(d){ d[2].split(' ').forEach(function(k){ DIVMAP[k] = d[0]; }); DIVKEY[d[1].toLowerCase()] = d[0]; DIVEN[d[0]] = d[1]; });
+DIVKEY.barisal = 'বরিশাল'; DIVKEY.chittagong = 'চট্টগ্রাম';
 var UP = {sundarganj:'সুন্দরগঞ্জ',gobindaganj:'গোবিন্দগঞ্জ',saghatta:'সাঘাটা',sadullapur:'সাদুল্লাপুর',fulchhari:'ফুলছড়ি',palashbari:'পলাশবাড়ী',
  badarganj:'বদরগঞ্জ',gangachara:'গঙ্গাচড়া',kaunia:'কাউনিয়া',mithapukur:'মিঠাপুকুর',pirgacha:'পীরগাছা',pirganj:'পীরগঞ্জ',taraganj:'তারাগঞ্জ',
  bhurungamari:'ভুরুঙ্গামারী',charrajibpur:'চর রাজিবপুর',chilmari:'চিলমারী',nageshwari:'নাগেশ্বরী',phulbari:'ফুলবাড়ী',rajarhat:'রাজারহাট',raumari:'রৌমারী',ulipur:'উলিপুর',
@@ -35,6 +49,18 @@ function upBn(en){
   if (/[ঀ-৿]/.test(en)) return en;
   unmapped[en] = 1; return en;
 }
+
+/* সারির বিভাগ: আগে জেলা থেকে (নির্ভরযোগ্য), না মিললে "বিভাগ" কলাম থেকে */
+function divOf(r, idx){
+  var d = idx.dist !== undefined ? DIVMAP[key(norm(r[idx.dist]))] : '';
+  if (d) return d;
+  if (idx.div === undefined) return '';
+  var v = norm(r[idx.div]), m = v.match(/\(([^)]+)\)/);
+  v = (m ? m[1] : v.replace(/\(.*\)/, '')).replace(/\s*বিভাগ$/, '').trim();
+  return /[ঀ-৿]/.test(v) ? v : (DIVKEY[v.toLowerCase().replace(/[^a-z]/g, '')] || v);
+}
+/* স্থানবাচক বিভক্তি: আ-কারে "য়" (ঢাকায়), ব্যঞ্জনে "ে" (রংপুরে), অন্য স্বরে "তে" (ফুলছড়িতে) */
+function loc(n){ return /া$/.test(n) ? n + 'য়' : (/[ক-হড়ঢ়য়ৎং]$/.test(n) ? n + 'ে' : n + 'তে'); }
 
 /* ---------- কলামের নাম (ফর্মের হেডার) ---------- */
 var KEYS = {
@@ -99,7 +125,7 @@ function bandCount(vals, edges, labels){
 }
 
 /* ---------- হিসাব ---------- */
-function compute(rows, idx, FUND){
+function compute(rows, idx, FUND, by){
   var g = function(r,k){ return idx[k] === undefined ? null : r[idx[k]]; };
   var s = function(r,k){ return norm(g(r,k)); };
   var n = rows.length;
@@ -108,17 +134,21 @@ function compute(rows, idx, FUND){
   var female = D.gender['মহিলা'] || 0, male = D.gender['পুরুষ'] || 0;
   var planOf = function(r){ var p = s(r,'plan'); return p.indexOf('ব্যবসা') >= 0 ? 'biz' : (p.indexOf('গবাদি') >= 0 || p.indexOf('পশু') >= 0 ? 'live' : 'other'); };
   /* উপজেলা */
+  /* by: 'up' = উপজেলাভিত্তিক (জেলা রিপোর্ট), 'dist' = জেলাভিত্তিক (বিভাগ রিপোর্ট), 'div' = বিভাগভিত্তিক (সব) */
+  by = by || 'up';
+  var gKey = {up:function(r){ return s(r,'up') || '—'; }, dist:function(r){ return s(r,'dist') || '—'; }, div:function(r){ return divOf(r, idx) || 'বিভাগ অজানা'; }}[by];
+  var gName = {up:upBn, dist:distBn, div:function(x){ return x; }}[by];
   var upg = {};
-  rows.forEach(function(r){ var k = s(r,'up') || '—'; (upg[k] = upg[k] || []).push(r); });
+  rows.forEach(function(r){ var k = gKey(r); (upg[k] = upg[k] || []).push(r); });
   D.upazila = Object.keys(upg).map(function(k){ var a = upg[k];
-    return {name:upBn(k), n:a.length, female:a.filter(function(r){ return s(r,'gender') === 'মহিলা'; }).length, biz:a.filter(function(r){ return planOf(r) === 'biz'; }).length}; })
+    return {name:gName(k), n:a.length, female:a.filter(function(r){ return s(r,'gender') === 'মহিলা'; }).length, biz:a.filter(function(r){ return planOf(r) === 'biz'; }).length}; })
     .sort(function(a,b){ return b.n - a.n; });
   /* কমিউনিটি */
   var cg = {};
-  rows.forEach(function(r){ var k = s(r,'com') || '—'; (cg[k] = cg[k] || []).push(r); });
-  D.communities = Object.keys(cg).map(function(k){ var a = cg[k], m = k.match(/(\d+)\s*$/);
+  rows.forEach(function(r){ var k = s(r,'dist') + '|' + (s(r,'com') || '—'); (cg[k] = cg[k] || []).push(r); });
+  D.communities = Object.keys(cg).map(function(k){ var a = cg[k], cm = k.slice(k.indexOf('|') + 1), m = cm.match(/(\d+)\s*$/);
     var ups = entries(countBy(a.map(function(r){ return s(r,'up'); })));
-    return {id:m ? m[1] : k, imam:s(a[0],'imam') || '—', up:ups.length ? upBn(ups[0][0]) : '—', n:a.length}; })
+    return {id:m ? m[1] : cm, imam:s(a[0],'imam') || '—', up:ups.length && by === 'up' ? upBn(ups[0][0]) : '—', dist:distBn(s(a[0],'dist')), n:a.length}; })
     .sort(function(a,b){ return b.n - a.n || (a.id > b.id ? 1 : -1); });
   /* তারিখ */
   var dts = rows.map(function(r){ return parseDate(g(r,'appr')); }).filter(Boolean);
@@ -185,7 +215,11 @@ function compute(rows, idx, FUND){
   D.needBands = bandCount(need, edges, labs);
   var cap = rows.map(function(r){ return num(g(r,'cap')); });
   D.capZero = cap.filter(function(v){ return v <= 0; }).length; D.capMean = mean(cap);
-  D.unions = Object.keys(countBy(rows.map(function(r){ return s(r,'uni'); }))).length;
+  var uniq = function(f){ var o = {}; rows.forEach(function(r){ var v = f(r); if (v) o[v] = 1; }); return Object.keys(o).length; };
+  D.unions = uniq(function(r){ return s(r,'uni') && s(r,'dist') + '|' + s(r,'up') + '|' + s(r,'uni'); });
+  D.nUp = uniq(function(r){ return s(r,'up') && s(r,'dist') + '|' + s(r,'up'); });
+  D.nDist = uniq(function(r){ return s(r,'dist'); });
+  D.nDiv = uniq(function(r){ return divOf(r, idx); });
   return D;
 }
 
@@ -243,17 +277,28 @@ function stack(el, parts){
 
 /* ---------- রিপোর্ট আঁকা ---------- */
 function render(rows, idx, meta){
-  var FUND = STATE.fund, D = compute(rows, idx, FUND), N = D.n, errors = [];
+  var SC = STATE.scope || {type:'dist', key:STATE.dist}, by = SC.type === 'dist' ? 'up' : (SC.type === 'div' ? 'dist' : 'div');
+  var FUND = STATE.fund, D = compute(rows, idx, FUND, by), N = D.n, errors = [];
   var sec = function(name, fn){ try { fn(); } catch (e) { errors.push(name + ': ' + e.message); } };
   var distEn = STATE.dist, distB = distBn(distEn);
-  var divRaw = rows.length && idx.div !== undefined ? norm(rows[0][idx.div]) : '';
-  var divB = (divRaw.match(/\(([^)]+)\)/) || [])[1] || divRaw.replace(/\(.*\)/,'').trim();
-  document.title = (distEn || 'District') + '_SRP-26_Report';
-  $('eyebrow').textContent = divB ? divB + ' বিভাগ' : '';
-  $('h1').textContent = distB + ' জেলা';
-  var total = N * FUND, crore = Math.floor(total/1e7), lakh = Math.round((total % 1e7)/1e5);
+  var divB = rows.length ? divOf(rows[0], idx) : '';
   var period = D.dmin && D.dmax ? ' অনুমোদন হয়েছে ' + dayLabel(D.dmin) + ' ' + dg(D.dmin.getFullYear()) + ' থেকে ' + dayLabel(D.dmax) + ' ' + dg(D.dmax.getFullYear()) + ' পর্যন্ত।' : '';
-  $('lead').textContent = distB + ' জেলার ' + dg(D.upazila.length) + 'টি উপজেলার ' + dg(N) + ' জন উপকারভোগীর তথ্য ও সহায়তার বিশ্লেষণ।' + period;
+  var tail = ' জন উপকারভোগীর তথ্য ও সহায়তার বিশ্লেষণ।' + period, scopeB, lead;
+  if (SC.type === 'div'){
+    scopeB = SC.key + ' বিভাগ'; document.title = (DIVEN[SC.key] || SC.key) + '_Division_SRP-26_Report';
+    $('eyebrow').textContent = 'বিভাগভিত্তিক প্রতিবেদন'; $('h1').textContent = scopeB;
+    lead = scopeB + 'ের ' + dg(D.nDist) + 'টি জেলার ' + dg(D.nUp) + 'টি উপজেলার ' + dg(N) + tail;
+  } else if (SC.type === 'all'){
+    scopeB = 'সমন্বিত'; document.title = 'All_Districts_SRP-26_Report';
+    $('eyebrow').textContent = 'সব জেলা একসাথে'; $('h1').textContent = 'সমন্বিত প্রতিবেদন';
+    lead = dg(D.nDiv) + 'টি বিভাগের ' + dg(D.nDist) + 'টি জেলার ' + dg(D.nUp) + 'টি উপজেলার ' + dg(N) + tail;
+  } else {
+    scopeB = distB + ' জেলা'; document.title = (distEn || 'District') + '_SRP-26_Report';
+    $('eyebrow').textContent = divB ? divB + ' বিভাগ' : ''; $('h1').textContent = scopeB;
+    lead = distB + ' জেলার ' + dg(D.upazila.length) + 'টি উপজেলার ' + dg(N) + tail;
+  }
+  $('lead').textContent = lead;
+  var total = N * FUND, crore = Math.floor(total/1e7), lakh = Math.round((total % 1e7)/1e5);
   $('fundBig').textContent = grp(total) + ' টাকা';
   $('fundSub').textContent = (crore ? dg(crore) + ' কোটি ' + (lakh ? dg(lakh) + ' লক্ষ ' : '') + 'টাকা · ' : (total >= 1e5 ? dg(Math.round(total/1e5*10)/10) + ' লক্ষ টাকা · ' : '')) + 'প্রত্যেকে ' + grp(FUND) + ' টাকা';
   Array.prototype.forEach.call(document.querySelectorAll('.F'), function(e){ e.textContent = grp(FUND); });
@@ -261,7 +306,9 @@ function render(rows, idx, meta){
   sec('kpis', function(){
     $('kpis').innerHTML = [
       [dg(N), 'জন উপকারভোগী'],
-      [dg(D.upazila.length) + ' / ' + dg(D.unions) + ' / ' + dg(D.communities.length), 'উপজেলা / ইউনিয়ন / কমিউনিটি'],
+      SC.type === 'div' ? [dg(D.nDist) + ' / ' + dg(D.nUp) + ' / ' + dg(D.communities.length), 'জেলা / উপজেলা / কমিউনিটি']
+        : (SC.type === 'all' ? [dg(D.nDiv) + ' / ' + dg(D.nDist) + ' / ' + dg(D.nUp), 'বিভাগ / জেলা / উপজেলা']
+        : [dg(D.upazila.length) + ' / ' + dg(D.unions) + ' / ' + dg(D.communities.length), 'উপজেলা / ইউনিয়ন / কমিউনিটি']),
       [dg(D.members), 'জন সদস্যের পরিবার, এর মধ্যে ' + dg(D.kids) + ' জন শিশু'],
       [grp(D.incMean), 'টাকা, পরিবারের গড় মাসিক আয়'],
       [grp(D.percap), 'টাকা, মাথাপিছু গড় মাসিক আয়']
@@ -276,24 +323,29 @@ function render(rows, idx, meta){
     f.push(dg(D.expGtInc) + ' জন (' + pc(D.expGtInc,N) + ') উপকারভোগীর মাসিক ব্যয় পরিবারের মোট আয়ের চেয়ে বেশি।');
     $('finds').innerHTML = f.map(function(t){ return '<li>' + t + '</li>'; }).join('');
   });
-  $('h-where').textContent = dg(D.upazila.length) + 'টি উপজেলায় ' + dg(N) + ' জন, সবচেয়ে বেশি ' + (D.upazila[0] ? D.upazila[0].name + (/সদর$/.test(D.upazila[0].name) ? 'ে' : 'তে') + ' (' + dg(D.upazila[0].n) + ' জন)' : '');
+  var UL = {up:['উপজেলা','উপজেলায়'], dist:['জেলা','জেলায়'], div:['বিভাগ','বিভাগে']}[by];
+  $('h-where').textContent = dg(D.upazila.length) + 'টি ' + UL[1] + ' ' + dg(N) + ' জন, সবচেয়ে বেশি ' + (D.upazila[0] ? loc(D.upazila[0].name) + ' (' + dg(D.upazila[0].n) + ' জন)' : '');
+  $('upTitle').textContent = UL[0] + 'ভিত্তিক উপকারভোগী ও সহায়তা';
   $('h-who').textContent = pc(D.male,N) + ' পুরুষ, গড় বয়স ' + dg(Math.round(D.ageMean)) + ' বছর, ' + pc(D.illit,N) + ' নিরক্ষর';
   $('h-money').textContent = 'মাথাপিছু আয় দিনে প্রায় ' + dg(Math.round(D.percap/30)) + ' টাকা, ' + pc(D.hasDebt,N) + ' জনের দেনা আছে';
   $('h-use').textContent = pc(D.biz,N) + ' ব্যবসা করতে চান' + (D.needN ? ', তাঁদের ' + pc(D.needLe, D.needN) + '-এর প্রয়োজন ' + grp(FUND) + ' টাকার মধ্যে' : '');
 
   sec('upazila', function(){
     var mx = Math.max.apply(null, D.upazila.map(function(u){ return u.n; })) || 1;
-    $('upTable').innerHTML = '<thead><tr><th>উপজেলা</th><th style="width:34%">উপকারভোগী</th><th class="num">সহায়তা (টাকা)</th><th class="num">নারী</th><th class="num">ব্যবসা বেছেছেন</th></tr></thead><tbody>' +
+    $('upTable').innerHTML = '<thead><tr><th>' + UL[0] + '</th><th style="width:34%">উপকারভোগী</th><th class="num">সহায়তা (টাকা)</th><th class="num">নারী</th><th class="num">ব্যবসা বেছেছেন</th></tr></thead><tbody>' +
       D.upazila.map(function(u){ return '<tr data-tip="' + u.name + ': ' + dg(u.n) + ' জন, ' + grp(u.n*FUND) + ' টাকা" tabindex="0"><td>' + u.name + '</td><td><div class="hb" style="grid-template-columns:1fr auto;padding:0"><span class="ht"><i style="width:' + u.n/mx*100 + '%"></i></span><span class="hv">' + dg(u.n) + '</span></div></td><td class="num">' + grp(u.n*FUND) + '</td><td class="num">' + pc(u.female,u.n) + '</td><td class="num">' + pc(u.biz,u.n) + '</td></tr>'; }).join('') +
       '<tr><td><b>মোট</b></td><td><b>' + dg(N) + '</b></td><td class="num"><b>' + grp(total) + '</b></td><td class="num"><b>' + pc(D.female,N) + '</b></td><td class="num"><b>' + pc(D.biz,N) + '</b></td></tr></tbody>';
   });
   sec('dates', function(){ cols('dates', D.dates, {h:150}); });
   sec('communities', function(){
+    var one = SC.type === 'dist';
+    $('comDet').style.display = one ? '' : 'none';
+    $('comSub').textContent = one ? 'প্রতিটি কমিউনিটির উপকারভোগীর সংখ্যা' : 'উপকারভোগীর সংখ্যা অনুযায়ী শীর্ষ ১২টি কমিউনিটি';
     $('comSum').textContent = 'সব ' + dg(D.communities.length) + 'টি কমিউনিটির ইমামের নামসহ তালিকা';
     $('comTable').innerHTML = '<thead><tr><th>নম্বর</th><th>স্থানীয় ইমাম</th><th>উপজেলা</th><th class="num">জন</th></tr></thead><tbody>' + D.communities.map(function(c){ return '<tr><td>' + dg(c.id) + '</td><td>' + c.imam + '</td><td>' + c.up + '</td><td class="num">' + dg(c.n) + '</td></tr>'; }).join('') + '</tbody>';
-    var cs = D.communities.slice(0, 20);
-    hbar('comBars', cs.map(function(c){ return ['কমিউনিটি ' + dg(c.id), c.n]; }), {total:N, noPct:true});
-    $('comTitle').textContent = dg(D.communities.length) + 'টি কমিউনিটি ও স্থানীয় ইমাম';
+    var cs = D.communities.slice(0, one ? 20 : 12);
+    hbar('comBars', cs.map(function(c){ return ['কমিউনিটি ' + dg(c.id) + (one ? '' : ', ' + c.dist), c.n]; }), {total:N, noPct:true});
+    $('comTitle').textContent = one ? dg(D.communities.length) + 'টি কমিউনিটি ও স্থানীয় ইমাম' : dg(D.communities.length) + 'টি কমিউনিটির মধ্যে বড়গুলো';
   });
   sec('who', function(){
     var gp = [['পুরুষ', D.male, 'var(--s1)'], ['মহিলা', D.female, 'var(--s2)']];
@@ -346,7 +398,7 @@ function render(rows, idx, meta){
 
   /* তথ্য সম্পর্কে */
   var notes = [];
-  notes.push('তথ্যের উৎস: ' + meta.file + ' (' + dg(STATE.rows.length) + 'টি সারি, ' + dg(STATE.head.length) + 'টি কলাম' + (STATE.dists.length > 1 ? '; এই রিপোর্ট শুধু ' + distB + ' জেলার ' + dg(N) + ' সারি নিয়ে' : '') + ')।' +
+  notes.push('তথ্যের উৎস: ' + meta.file + ' (' + dg(STATE.rows.length) + 'টি সারি, ' + dg(STATE.head.length) + 'টি কলাম' + (SC.type === 'dist' && STATE.dists.length > 1 ? '; এই রিপোর্ট শুধু ' + distB + ' জেলার ' + dg(N) + ' সারি নিয়ে' : (SC.type === 'div' ? '; এই রিপোর্ট শুধু ' + SC.key + ' বিভাগের ' + dg(N) + ' সারি নিয়ে' : '')) + ')।' +
     (idx.elig !== undefined && rows.every(function(r){ return norm(r[idx.elig]) === 'অনুমোদিত'; }) ? ' সব উপকারভোগী আলেমের অনুমোদনপ্রাপ্ত।' : ''));
   notes.push('প্রত্যেক উপকারভোগীকে ' + grp(FUND) + ' টাকা সহায়তা দেওয়া হয়েছে ধরে সব হিসাব করা হয়েছে। এই অঙ্ক ডাটাশিটে থাকে না, টুলবারের ঘর থেকে বদলানো যায়।');
   if (D.debtTotal > 0) notes.push('“দেনা” হিসাবে অনাদায়ী দেনমোহর ধরা হয়েছে, তাই অনেকের নিট সম্পদ ঋণাত্মক (' + dg(D.netNeg) + ' জন)। মোট দেনার ' + pc(D.dower, D.debtTotal) + ' দেনমোহর।');
@@ -379,9 +431,14 @@ function handleFile(file){
       STATE.rows = rows; STATE.head = d.head; STATE.idx = idx; STATE.file = file.name; STATE.missing = ix.missing.filter(function(k){ return ['loanMet','elig','vil','uni','div','kids','animal'].indexOf(k) < 0 || k === 'kids' || k === 'animal'; }).map(function(k){ return KEYS[k][0]; });
       var ds = {}; rows.forEach(function(r){ var k = idx.dist === undefined ? '' : norm(r[idx.dist]); ds[k] = (ds[k] || 0) + 1; });
       STATE.dists = Object.keys(ds).sort(function(a,b){ return ds[b] - ds[a]; });
-      var sel = $('distSel'); sel.innerHTML = STATE.dists.map(function(k){ return '<option value="' + k + '">' + (k ? distBn(k) + ' (' + dg(ds[k]) + ')' : 'জেলা অজানা') + '</option>'; }).join('');
+      var sel = $('distSel'), dv = {}, esc = function(t){ return String(t).replace(/&/g,'&amp;').replace(/"/g,'&quot;'); };
+      rows.forEach(function(r){ var v = divOf(r, idx); if (v) dv[v] = (dv[v] || 0) + 1; });
+      var dvs = Object.keys(dv).sort(function(x,y){ return dv[y] - dv[x]; }), multiDiv = dvs.length > 1;
+      sel.innerHTML = (multiDiv ? '<option value="a:">সব জেলা একসাথে (' + dg(rows.length) + ')</option>' : '') +
+        (STATE.dists.length > 1 && dvs.length ? '<optgroup label="বিভাগ">' + dvs.map(function(k){ return '<option value="v:' + esc(k) + '">' + k + ' বিভাগ (' + dg(dv[k]) + ')</option>'; }).join('') + '</optgroup>' : '') +
+        '<optgroup label="জেলা">' + STATE.dists.map(function(k){ return '<option value="d:' + esc(k) + '">' + (k ? distBn(k) + ' (' + dg(ds[k]) + ')' : 'জেলা অজানা') + '</option>'; }).join('') + '</optgroup>';
       $('distWrap').hidden = STATE.dists.length < 2;
-      STATE.dist = STATE.dists[0]; sel.value = STATE.dist;
+      STATE.dist = STATE.dists[0]; STATE.scope = {type:'dist', key:STATE.dist}; sel.value = 'd:' + STATE.dist;
       $('fname').textContent = file.name;
       $('start').hidden = true; $('bar').hidden = false; $('report').hidden = false;
       draw(); window.scrollTo(0, 0);
@@ -390,7 +447,11 @@ function handleFile(file){
   if (isCsv) rd.readAsText(file, 'utf-8'); else rd.readAsArrayBuffer(file);
 }
 function draw(){
-  var idx = STATE.idx, rows = STATE.rows.filter(function(r){ return idx.dist === undefined || norm(r[idx.dist]) === STATE.dist; });
+  var idx = STATE.idx, SC = STATE.scope, rows = STATE.rows.filter(function(r){
+    if (SC.type === 'all') return true;
+    if (SC.type === 'div') return divOf(r, idx) === SC.key;
+    return idx.dist === undefined || norm(r[idx.dist]) === STATE.dist;
+  });
   unmapped = {}; render(rows, idx, {file:STATE.file});
 }
 
@@ -399,7 +460,12 @@ var dz = $('drop');
 ['dragenter','dragover'].forEach(function(ev){ dz.addEventListener(ev, function(e){ e.preventDefault(); dz.classList.add('over'); }); });
 ['dragleave','drop'].forEach(function(ev){ dz.addEventListener(ev, function(e){ e.preventDefault(); dz.classList.remove('over'); }); });
 dz.addEventListener('drop', function(e){ var f = e.dataTransfer && e.dataTransfer.files[0]; if (f) handleFile(f); });
-$('distSel').addEventListener('change', function(e){ STATE.dist = e.target.value; draw(); });
+$('distSel').addEventListener('change', function(e){
+  var v = e.target.value, t = v.charAt(0), k = v.slice(2);
+  if (t === 'd') STATE.dist = k;
+  STATE.scope = {type: t === 'a' ? 'all' : (t === 'v' ? 'div' : 'dist'), key: t === 'd' ? k : (t === 'v' ? k : '')};
+  draw();
+});
 $('fundIn').addEventListener('input', function(e){ var v = Number(e.target.value); if (v > 0){ STATE.fund = v; if (STATE.rows) draw(); } });
 $('printBtn').addEventListener('click', function(){ try { window.print(); } catch (e) {} });
 $('again').addEventListener('click', function(){ $('fileIn').value = ''; $('start').hidden = false; $('bar').hidden = true; $('report').hidden = true; $('dropMsg').textContent = ''; document.title = 'SRP-২৬ রিপোর্ট জেনারেটর'; });
