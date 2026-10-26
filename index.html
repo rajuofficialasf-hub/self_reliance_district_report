@@ -87,6 +87,8 @@ button,select,input{font-family:inherit}
 .barin label{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink2)}
 .barin select,.barin input{font-size:14px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:6px 8px;min-width:0}
 .barin input{width:7.5em}
+.barin .chk{cursor:pointer}
+.barin input[type=checkbox]{width:auto;padding:0;margin:0}
 .barin .acts{display:flex;flex-wrap:wrap;gap:8px}
 .hint{margin:6px 0 0;font-size:12.5px;color:var(--muted)}
 
@@ -272,6 +274,7 @@ details summary{cursor:pointer;font-weight:500;font-size:14px}
   <span class="fn" id="fname"></span>
   <label id="distWrap" hidden>দেখুন <select id="distSel"></select></label>
   <label>প্রত্যেকের সহায়তা (টাকা) <input id="fundIn" type="number" value="50000" min="1" step="1000" inputmode="numeric"></label>
+  <label class="chk" title="আয়, ব্যয়, পুঁজি, পরিবারের আকার ও বয়সে অসম্ভব রকমের মান (যেমন বাড়তি শূন্য) গড় ও মধ্যমার হিসাব থেকে বাদ যায়"><input type="checkbox" id="cleanChk" checked> অসম্ভব মান বাদ দিন</label>
   <div class="acts"><button class="btn pri" id="printBtn" type="button">PDF / প্রিন্ট</button><button class="btn" id="tplBtn2" type="button">টেমপ্লেট</button><button class="btn" id="again" type="button">অন্য ফাইল</button></div>
 </div><p class="hint">PDF করতে প্রিন্ট ডায়ালগে “Save as PDF” বাছুন। লেআউট নিজে থেকেই A4 ল্যান্ডস্কেপে সাজে। বাটনে কাজ না হলে Ctrl+P (Mac-এ Cmd+P) চাপুন। <span id="tplMsg2"></span></p></div></div>
 
@@ -375,9 +378,10 @@ function grp(n){
   return (neg ? '−' : '') + dg(s);
 }
 var pc = function(a,b){ return b ? dg(Math.round(a/b*100)) + '%' : '০%'; };
-var sum = function(a){ return a.reduce(function(x,y){ return x + y; }, 0); };
-var median = function(a){ if (!a.length) return 0; var s = a.slice().sort(function(x,y){ return x-y; }), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m-1] + s[m]) / 2; };
-var mean = function(a){ return a.length ? sum(a)/a.length : 0; };
+var fin = function(a){ return a.filter(function(x){ return isFinite(x); }); }; /* NaN = বাদ দেওয়া মান */
+var sum = function(a){ return a.reduce(function(x,y){ return x + (isFinite(y) ? y : 0); }, 0); };
+var median = function(a){ a = fin(a); if (!a.length) return 0; var s = a.slice().sort(function(x,y){ return x-y; }), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m-1] + s[m]) / 2; };
+var mean = function(a){ a = fin(a); return a.length ? sum(a)/a.length : 0; };
 var BD = function(s){ return String(s).replace(/[০-৯]/g, function(d){ return '০১২৩৪৫৬৭৮৯'.indexOf(d); }); };
 var num = function(v){ var x = Number(BD(v == null ? '' : v).replace(/,/g,'')); return isFinite(x) && v !== null && v !== '' ? x : 0; };
 var norm = function(s){ return String(s == null ? '' : s).normalize('NFC').replace(/[\u200b-\u200d\ufeff]/g,'').replace(/\s+/g,' ').trim(); };
@@ -444,7 +448,7 @@ var KEYS = {
 };
 var REQUIRED = ['name','dist','up','gender','plan','hhInc','debt'];
 
-var STATE = { rows:null, head:null, file:'', dists:[], dist:'', fund:50000, missing:[] };
+var STATE = { clean:true, rows:null, head:null, file:'', dists:[], dist:'', fund:50000, missing:[] };
 
 function indexHeaders(head){
   var h = head.map(norm), idx = {}, missing = [];
@@ -487,7 +491,7 @@ function countBy(arr){ var o = {}; arr.forEach(function(x){ if (x !== '' && x !=
 function entries(o){ return Object.keys(o).map(function(k){ return [k, o[k]]; }).sort(function(a,b){ return b[1]-a[1]; }); }
 function bandCount(vals, edges, labels){
   var c = labels.map(function(){ return 0; });
-  vals.forEach(function(v){ var i = 0; while (i < edges.length && v > edges[i]) i++; c[i]++; });
+  vals.forEach(function(v){ if (!isFinite(v)) return; var i = 0; while (i < edges.length && v > edges[i]) i++; c[i]++; });
   return labels.map(function(l,i){ return [l, c[i]]; });
 }
 
@@ -497,6 +501,19 @@ function compute(rows, idx, FUND, by){
   var s = function(r,k){ return norm(g(r,k)); };
   var n = rows.length;
   var D = {n:n};
+  /* অসম্ভব মান (সম্ভবত এন্ট্রির ভুল) গড়/মধ্যমার হিসাব থেকে বাদ: STATE.clean চালু থাকলে */
+  var FENCE = STATE.fence || {}, CL = STATE.clean !== false;
+  var isBad = function(r,k){
+    if (!CL || idx[k] === undefined) return false;
+    var v = num(g(r,k));
+    if (k === 'mem') return v > 40;
+    if (k === 'kids'){ var m = cn(r,'mem'); return v > 40 || (m > 0 && v > m); }
+    return v < 0 || (FENCE[k] != null && v > FENCE[k]);
+  };
+  var cn = function(r,k){ return isBad(r,k) ? NaN : num(g(r,k)); };
+  var CLK = {hhInc:'পরিবারের মোট আয়', ownInc:'নিজের মাসিক আয়', exp:'মাসিক ব্যয়', mem:'পরিবারের সদস্য সংখ্যা', kids:'শিশুর সংখ্যা', need:'ব্যবসার জন্য প্রয়োজনীয় টাকা', cap:'বর্তমান পুঁজি'};
+  D.flags = [];
+  rows.forEach(function(r){ Object.keys(CLK).forEach(function(k){ if (isBad(r,k)) D.flags.push({name:s(r,'name') || '—', col:CLK[k], v:num(g(r,k))}); }); });
   D.gender = countBy(rows.map(function(r){ return s(r,'gender'); }));
   var female = D.gender['মহিলা'] || 0, male = D.gender['পুরুষ'] || 0;
   var planOf = function(r){ var p = s(r,'plan'); return p.indexOf('ব্যবসা') >= 0 ? 'biz' : (p.indexOf('গবাদি') >= 0 || p.indexOf('পশু') >= 0 ? 'live' : 'other'); };
@@ -525,10 +542,11 @@ function compute(rows, idx, FUND, by){
   /* বয়স */
   var ref = D.dmax || new Date();
   var ages = rows.map(function(r){ var d = parseDate(g(r,'dob')); return d ? (ref - d) / 31557600000 : null; }).filter(function(a){ return a !== null; });
+  D.ageBad = ages.filter(function(a){ return a < 18 || a > 100; }).length;
+  if (CL) ages = ages.filter(function(a){ return a >= 18 && a <= 100; });
   var AB = ['৩০ এর কম','৩০–৩৯','৪০–৪৯','৫০–৫৯','৬০–৬৯','৭০+'];
   D.age = bandCount(ages, [29.999,39.999,49.999,59.999,69.999], AB);
   D.ageMean = mean(ages); D.ageMedian = median(ages); D.ageN = ages.length;
-  D.ageBad = ages.filter(function(a){ return a < 18 || a > 100; }).length;
   /* পরিচয় */
   D.marital = countBy(rows.map(function(r){ return s(r,'marital'); }));
   var ec = countBy(rows.map(function(r){ return eduCat(g(r,'edu')); }));
@@ -538,15 +556,15 @@ function compute(rows, idx, FUND, by){
   D.occ = countBy(rows.map(function(r){ return s(r,'occ'); }));
   D.house = countBy(rows.map(function(r){ return s(r,'house'); }));
   /* আয়-ব্যয় */
-  var inc = rows.map(function(r){ return num(g(r,'hhInc')); });
+  var inc = rows.map(function(r){ return cn(r,'hhInc'); });
   D.incBands = bandCount(inc, [3000,5000,7000,9000,12000], ['≤৩,০০০','৩,০০১–৫,০০০','৫,০০১–৭,০০০','৭,০০১–৯,০০০','৯,০০১–১২,০০০','১২,০০০+']);
   D.incMean = mean(inc); D.incMedian = median(inc);
-  D.ownIncMean = mean(rows.map(function(r){ return num(g(r,'ownInc')); }));
-  D.expMean = mean(rows.map(function(r){ return num(g(r,'exp')); }));
-  var pcs = rows.map(function(r){ var m = num(g(r,'mem')); return m > 0 ? num(g(r,'hhInc')) / m : null; }).filter(function(x){ return x !== null; });
+  D.ownIncMean = mean(rows.map(function(r){ return cn(r,'ownInc'); }));
+  D.expMean = mean(rows.map(function(r){ return cn(r,'exp'); }));
+  var pcs = rows.map(function(r){ var m = cn(r,'mem'); return m > 0 ? cn(r,'hhInc') / m : null; }).filter(function(x){ return x !== null && isFinite(x); });
   D.percap = mean(pcs);
-  D.expGtInc = rows.filter(function(r){ return num(g(r,'exp')) > num(g(r,'hhInc')); }).length;
-  D.members = sum(rows.map(function(r){ return num(g(r,'mem')); })); D.kids = sum(rows.map(function(r){ return num(g(r,'kids')); }));
+  D.expGtInc = rows.filter(function(r){ return cn(r,'exp') > cn(r,'hhInc'); }).length;
+  D.members = sum(rows.map(function(r){ return cn(r,'mem'); })); D.kids = sum(rows.map(function(r){ return cn(r,'kids'); }));
   var yes = function(k){ return rows.filter(function(r){ return s(r,'' + k) === 'হ্যাঁ'; }).length; };
   D.multi = yes('multi'); D.allow = yes('allow'); D.loanN = yes('hasLoan');
   /* দেনা */
@@ -555,6 +573,7 @@ function compute(rows, idx, FUND, by){
     ['১–১০,০০০', debt.filter(function(v){ return v > 0 && v <= 10000; }).length],
     ['১০,০০১–৫০,০০০', debt.filter(function(v){ return v > 10000 && v <= 50000; }).length],
     ['৫০,০০০-এর বেশি', debt.filter(function(v){ return v > 50000; }).length]];
+  D.debtMax = Math.max.apply(null, debt.concat([0])); D.debtMedianPos = median(debt.filter(function(v){ return v > 0; }));
   D.debtTotal = sum(debt); D.hasDebt = debt.filter(function(v){ return v > 0; }).length; D.debtGt50 = debt.filter(function(v){ return v > 50000; }).length;
   D.dower = sum(rows.map(function(r){ return num(g(r,'dower')); })); D.borrow = sum(rows.map(function(r){ return num(g(r,'borrow')); }));
   D.bills = D.debtTotal - D.dower - D.borrow;
@@ -572,7 +591,7 @@ function compute(rows, idx, FUND, by){
   var btc = entries(countBy(bt)), named = btc.filter(function(e){ return e[0] !== 'অন্যান্য'; }).slice(0, 10);
   var rest = bt.length - sum(named.map(function(e){ return e[1]; }));
   D.bizTypes = named.concat(rest > 0 ? [['অন্যান্য ধরনের ব্যবসা', rest]] : []); D.bizTypeN = bt.length;
-  var need = rows.filter(function(r){ return planOf(r) === 'biz'; }).map(function(r){ return num(g(r,'need')); }).filter(function(v){ return v > 0; });
+  var need = rows.filter(function(r){ return planOf(r) === 'biz'; }).map(function(r){ return cn(r,'need'); }).filter(function(v){ return v > 0; });
   D.needN = need.length; D.needMedian = median(need); D.needLe = need.filter(function(v){ return v <= FUND; }).length;
   var edges = [], labs = [];
   if (FUND >= 20000){ var p = 20000; edges.push(p); labs.push('≤' + grp(p)); while (p + 10000 <= FUND){ labs.push(grp(p) + '–' + grp(p+10000)); p += 10000; edges.push(p); } labs[0] = '≤' + grp(20000);
@@ -580,7 +599,7 @@ function compute(rows, idx, FUND, by){
   } else { edges = [FUND]; labs = ['≤' + grp(FUND)]; }
   labs.push(grp(edges[edges.length-1]) + '-এর বেশি');
   D.needBands = bandCount(need, edges, labs);
-  var cap = rows.map(function(r){ return num(g(r,'cap')); });
+  var cap = rows.map(function(r){ return cn(r,'cap'); });
   D.capZero = cap.filter(function(v){ return v <= 0; }).length; D.capMean = mean(cap);
   var uniq = function(f){ var o = {}; rows.forEach(function(r){ var v = f(r); if (v) o[v] = 1; }); return Object.keys(o).length; };
   D.unions = uniq(function(r){ return s(r,'uni') && s(r,'dist') + '|' + s(r,'up') + '|' + s(r,'uni'); });
@@ -769,7 +788,13 @@ function render(rows, idx, meta){
     (idx.elig !== undefined && rows.every(function(r){ return norm(r[idx.elig]) === 'অনুমোদিত'; }) ? ' সব উপকারভোগী আলেমের অনুমোদনপ্রাপ্ত।' : ''));
   notes.push('প্রত্যেক উপকারভোগীকে ' + grp(FUND) + ' টাকা সহায়তা দেওয়া হয়েছে ধরে সব হিসাব করা হয়েছে। এই অঙ্ক ডাটাশিটে থাকে না, টুলবারের ঘর থেকে বদলানো যায়।');
   if (D.debtTotal > 0) notes.push('“দেনা” হিসাবে অনাদায়ী দেনমোহর ধরা হয়েছে, তাই অনেকের নিট সম্পদ ঋণাত্মক (' + dg(D.netNeg) + ' জন)। মোট দেনার ' + pc(D.dower, D.debtTotal) + ' দেনমোহর।');
-  if (D.ageBad) notes.push(dg(D.ageBad) + ' জনের জন্মতারিখ অনুযায়ী বয়স ১৮ বছরের কম বা ১০০ বছরের বেশি আসে। সম্ভবত এন্ট্রির ভুল, তবে বদলানো হয়নি।');
+  if (D.ageBad) notes.push(dg(D.ageBad) + ' জনের জন্মতারিখ অনুযায়ী বয়স ১৮ বছরের কম বা ১০০ বছরের বেশি আসে। সম্ভবত এন্ট্রির ভুল' + (STATE.clean !== false ? ', তাই বয়সের গড়, মধ্যমা ও বিন্যাস থেকে বাদ দেওয়া হয়েছে।' : ', তবে বাদ দেওয়া হয়নি।'));
+  if (STATE.clean === false) notes.push('“অসম্ভব মান বাদ দিন” বন্ধ আছে, তাই ফাইলের সব মান যেমন আছে তেমন ধরে গড় করা হয়েছে।');
+  else if (D.flags.length){
+    var fl = D.flags.slice(0, 8).map(function(f){ return f.name + ' (' + f.col + ': ' + grp(f.v) + ')'; }).join('; ');
+    notes.push(dg(D.flags.length) + 'টি মান অসম্ভব রকমের বড় বা ভুল মনে হওয়ায় (সম্ভবত শূন্য বেশি বসেছে বা এন্ট্রির ভুল) গড় ও মধ্যমার হিসাব থেকে বাদ দেওয়া হয়েছে। উপকারভোগীর সংখ্যা, মোট সহায়তা ও অন্যান্য চার্টে এর প্রভাব নেই। ফাইল মিলিয়ে দেখুন: ' + fl + (D.flags.length > 8 ? ' এবং আরও ' + dg(D.flags.length - 8) + 'টি' : '') + '।');
+  } else notes.push('আয়, ব্যয়, পুঁজি ও পরিবারের আকারে কোনো অসম্ভব মান পাওয়া যায়নি, তাই কিছু বাদ দেওয়া হয়নি।');
+  if (D.debtTotal > 0) notes.push('দেনার বড় অঙ্কগুলো (এই রিপোর্টে সর্বোচ্চ ' + grp(D.debtMax) + ' টাকা) বাস্তব ধরা হয়েছে, বাদ দেওয়া হয়নি। এগুলো সবচেয়ে ঝুঁকিপূর্ণ পরিবারের চিত্র। তুলনার জন্য ঋণী পরিবারের মধ্যমা দেনা ' + grp(D.debtMedianPos) + ' টাকা।');
   notes.push('বয়স গণনা হয়েছে ' + (D.dmax ? dayLabel(D.dmax) + ' ' + dg(D.dmax.getFullYear()) : 'আজকের') + ' তারিখ ধরে। ইউনিয়ন ও গ্রামের নাম ডাটার বানান অনুযায়ী আছে।');
   var um = Object.keys(unmapped); if (um.length) notes.push('এই উপজেলার বাংলা নাম তালিকায় নেই, তাই ইংরেজি বানানে দেখানো হয়েছে: ' + um.join(', ') + '।');
   if (STATE.missing.length) notes.push('ফাইলে এই কলামগুলো পাওয়া যায়নি, তাই সংশ্লিষ্ট অংশ ফাঁকা বা অসম্পূর্ণ হতে পারে: ' + STATE.missing.join(', ') + '।');
@@ -783,6 +808,15 @@ function loadRows(wb){
   var all = XLSX.utils.sheet_to_json(wb.Sheets[name], {header:1, raw:true, defval:null});
   return {head:all[0] || [], body:all.slice(1)};
 }
+function computeFence(rows, idx){
+  /* শুধু মাত্রার ভুল ধরার জন্য: ধনাত্মক মানের ৯০তম পার্সেন্টাইলের ১০ গুণ বা নির্দিষ্ট নিম্নসীমা, যেটি বড় */
+  var FL = {hhInc:100000, ownInc:100000, exp:100000, need:1000000, cap:1000000}, F = {};
+  Object.keys(FL).forEach(function(k){ if (idx[k] === undefined) return;
+    var v = rows.map(function(r){ return num(r[idx[k]]); }).filter(function(x){ return x > 0; }).sort(function(a,b){ return a - b; });
+    F[k] = Math.max(FL[k], v.length >= 10 ? 10 * v[Math.floor(0.9 * (v.length - 1))] : 0);
+  });
+  return F;
+}
 function handleFile(file){
   var msg = $('dropMsg'); msg.textContent = 'ফাইল পড়া হচ্ছে…'; msg.className = '';
   var isCsv = /\.csv$/i.test(file.name), rd = new FileReader();
@@ -795,7 +829,7 @@ function handleFile(file){
       if (miss.length > 3){ msg.textContent = 'এটি SRP-২৬ ফর্মের ডাটা মনে হচ্ছে না। হেডার সারি (প্রথম সারি) ঠিক আছে কি না দেখুন। পাওয়া যায়নি: ' + miss.map(function(k){ return KEYS[k][0]; }).join(', '); msg.className = 'err'; return; }
       var idx = ix.idx, rows = d.body.filter(function(r){ return r && (norm(r[idx.name]) || norm(r[idx.plan])); });
       if (!rows.length){ msg.textContent = 'ফাইলে কোনো উপকারভোগীর সারি পাওয়া যায়নি।'; msg.className = 'err'; return; }
-      STATE.rows = rows; STATE.head = d.head; STATE.idx = idx; STATE.file = file.name; STATE.missing = ix.missing.filter(function(k){ return ['loanMet','elig','vil','uni','div','kids','animal'].indexOf(k) < 0 || k === 'kids' || k === 'animal'; }).map(function(k){ return KEYS[k][0]; });
+      STATE.fence = computeFence(rows, idx); STATE.rows = rows; STATE.head = d.head; STATE.idx = idx; STATE.file = file.name; STATE.missing = ix.missing.filter(function(k){ return ['loanMet','elig','vil','uni','div','kids','animal'].indexOf(k) < 0 || k === 'kids' || k === 'animal'; }).map(function(k){ return KEYS[k][0]; });
       var ds = {}; rows.forEach(function(r){ var k = idx.dist === undefined ? '' : norm(r[idx.dist]); ds[k] = (ds[k] || 0) + 1; });
       STATE.dists = Object.keys(ds).sort(function(a,b){ return ds[b] - ds[a]; });
       var sel = $('distSel'), dv = {}, esc = function(t){ return String(t).replace(/&/g,'&amp;').replace(/"/g,'&quot;'); };
@@ -833,6 +867,7 @@ $('distSel').addEventListener('change', function(e){
   STATE.scope = {type: t === 'a' ? 'all' : (t === 'v' ? 'div' : 'dist'), key: t === 'd' ? k : (t === 'v' ? k : '')};
   draw();
 });
+$('cleanChk').addEventListener('change', function(e){ STATE.clean = e.target.checked; if (STATE.rows) draw(); });
 $('fundIn').addEventListener('input', function(e){ var v = Number(e.target.value); if (v > 0){ STATE.fund = v; if (STATE.rows) draw(); } });
 $('printBtn').addEventListener('click', function(){ try { window.print(); } catch (e) {} });
 $('again').addEventListener('click', function(){ $('fileIn').value = ''; $('start').hidden = false; $('bar').hidden = true; $('report').hidden = true; $('dropMsg').textContent = ''; document.title = 'SRP-২৬ রিপোর্ট জেনারেটর'; });
